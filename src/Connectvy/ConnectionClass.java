@@ -33,6 +33,10 @@ public class ConnectionClass {
         String dbName2="azoz";
         String userName2="sa";
         String password2="1418";
+      
+        String dbName3="project";
+        String userName3="root";
+        String password3="";
 
 
 
@@ -44,7 +48,7 @@ public class ConnectionClass {
 
            //connection= DriverManager.getConnection("jdbc:mysql://sql12.freemysqlhosting.net:3306/"+dbName,userName,password);
 
-         connection= DriverManager.getConnection("jdbc:mysql://localhost/"+dbName1,userName1,password1);
+         connection= DriverManager.getConnection("jdbc:mysql://localhost/"+dbName3,userName3,password3);
             // its ok with port and with out port
           // connection= DriverManager.getConnection("jdbc:sqlserver://192.168.1.90:1433; DatabaseName=azoz","sa","1418");
 //
