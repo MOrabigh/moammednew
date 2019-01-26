@@ -109,7 +109,13 @@ public class Controller_AddMO implements Initializable{
         
   Connection connection = connectionClass.getConnection();
        // String sql ="INSERT INTO \"azoz\".\"dbo\".\"user\" (\"name\") VALUES('"+textbox.getText()+"')";
-        String sql ="INSERT INTO user VALUES('"+"hhhhhhhh"+"')";
+               
+          String sql ="INSERT INTO maintenance _operation VALUES('"+"NULL"+"rabigh"+100+150+"2019-01-24"+"2019-01-25"+"2019-01-25"+"erorr in operating system"+"N1010010101"+"hardware"+1+"506648821"+"2019-01-25"+400+"')";
+     
+
+
+     
+
        java.sql.Statement statement1 = connection.createStatement();
         statement1.executeUpdate(sql);
     }
