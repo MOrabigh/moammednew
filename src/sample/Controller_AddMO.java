@@ -7,7 +7,9 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -89,6 +91,29 @@ public class Controller_AddMO implements Initializable{
 
     @FXML
     private void M_Btn_Cancle_AddMo(ActionEvent event) {
+      
+        
+       Txfiled_ProplemDisc_AddMO.clear();
+       Txfiled_CusMnum_AddMO.clear();
+       Txfiled_SPCost_AddMO.clear();
+       Txfiled_MOCost_AddMO.clear();
+       Txfiled_DevSerialN_AddMO.clear();
+       Txfiled_DevDiscription_AddMO.clear();
+       Txfiled_SpSerialN_AddMO.clear();
+       Txfiled_TotalCost_AddMO.clear();
+       Txfiled_VAT_AddMO.clear();
+       Txfiled_MOnum_AddMO.clear();
+       Txfiled_SearchSP_AddMO.clear();
+       Selct_Techichan_AddMO.disableProperty();
+       
+       
+       
+       
+       
+       
+       
+       
+       
     }
 
     @FXML
@@ -109,16 +134,46 @@ public class Controller_AddMO implements Initializable{
         
   Connection connection = connectionClass.getConnection();
        // String sql ="INSERT INTO \"azoz\".\"dbo\".\"user\" (\"name\") VALUES('"+textbox.getText()+"')";
-               
-          String sql ="INSERT INTO maintenance _operation VALUES('"+"NULL"+"rabigh"+100+150+"2019-01-24"+"2019-01-25"+"2019-01-25"+"erorr in operating system"+"N1010010101"+"hardware"+1+"506648821"+"2019-01-25"+400+"')";
+               //String sql ="INSERT INTO student VALUES('100.00')"; 
+        // String sql ="INSERT INTO maintenance_operation VALUES('"+
+         //Txfiled_ProplemDisc_AddMO.getText()+"''"+Txfiled_CusMnum_AddMO.getText()+"'"
+                 //+ "'"+Date_Warranty_AddMO.getValue()+"''"+Date_StartMo_AddMO.getValue()+"''"+Date_EndMO_AddMO.getValue()+"''"+Txfiled_SPCost_AddMO.getText()+"'"
+                 //+ "'"+Txfiled_MOCost_AddMO.getText()+"''"+Txfiled_MOnum_AddMO.getText()+"')";
+                 //String sql = "select * from maintenance_operation WHERE MO_NBER = '" + Txfiled_MOnum_AddMO.getText()+ "'";
+             
+           Statement st = connection.createStatement();
+               st.executeQuery("select * FROM  maintenance_operation WHERE MO_NBER= '" + Txfiled_MOnum_AddMO.getText()+ "'");
+              ResultSet rs = st.getResultSet();
+              
+              if(rs.first()){
+                  
+            Txfiled_ProplemDisc_AddMO.setText(rs.getString("PROBLEM_DESC"));
+            Txfiled_CusMnum_AddMO.setText(rs.getString("CUS_MOBILE_NBER"));
+            Txfiled_SPCost_AddMO.setText(rs.getString("SP_COST"));
+            Txfiled_MOCost_AddMO.setText(rs.getString("MO_COST"));
+            Txfiled_DevSerialN_AddMO.setText(rs.getString("DEVICE_SN"));
+            Txfiled_DevDiscription_AddMO.setText(rs.getString("DEVICE_DESC"));
+            //String sringFormatDate = .sqlDateToString(rs.getDate("STARTING_DATE"));
+            // Date_EndMO_AddMO.;
+            //Selct_MoStatus_AddMO.(rs.getString("PROBLEM_DESC"));
+            //Txfiled_ProplemDisc_AddMO.setText(rs.getString("PROBLEM_DESC"));
+            //Txfiled_ProplemDisc_AddMO.setText(rs.getString("PROBLEM_DESC"));
+            //Txfiled_ProplemDisc_AddMO.setText(rs.getString("PROBLEM_DESC"));
+            
+         
+            //System.out.println(rs.getString(""));
+            //System.out.println(rs.getString(""));
+            //System.out.println(rs.getString(""));
+
+        }
+              
+              
+    }              
      
 
-
-     
-
-       java.sql.Statement statement1 = connection.createStatement();
-        statement1.executeUpdate(sql);
-    }
+      // java.sql.Statement statement1 = connection.createStatement();
+        //statement1.executeQuery(sql);
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
