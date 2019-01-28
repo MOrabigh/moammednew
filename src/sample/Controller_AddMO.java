@@ -185,7 +185,7 @@ public class Controller_AddMO implements Initializable{
               if(rs.first()){
                   
             
-        
+          Txfiled_MOnum_AddMO.setDisable(true);
             Txfiled_ProplemDisc_AddMO.setText(rs.getString("PROBLEM_DESC"));
             Txfiled_CusMnum_AddMO.setText(rs.getString("CUS_MOBILE_NBER"));
             Txfiled_SPCost_AddMO.setText(rs.getString("SP_COST"));
@@ -200,6 +200,7 @@ public class Controller_AddMO implements Initializable{
              Btn_Print_AddMo.setDisable(false);
              Btn_Delete_AddMo.setDisable(false);
              Txfiled_CusName_AddMO.setDisable(true);
+             Btn_Cancle_AddMo.setDisable(false);
       //Selct_Techichan_AddMO.getSelectionModel().selectedIndexProperty().(rs.getString("STATE"));
       
             
