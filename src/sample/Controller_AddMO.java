@@ -5,16 +5,24 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 
@@ -42,6 +50,10 @@ public class Controller_AddMO implements Initializable{
     private ComboBox<?> Selct_Techichan_AddMO;
     @FXML
     private ComboBox<?> Selct_MoStatus_AddMO;
+     ObservableList<String> ListOfStatus = FXCollections.observableArrayList("UnderMO", "Another Problem", "Finsh");
+
+    ObservableList<String> ListOfTechichan = FXCollections.observableArrayList();
+
     @FXML
     private JFXTextField Txfiled_SpSerialN_AddMO;
     @FXML
@@ -85,9 +97,32 @@ public class Controller_AddMO implements Initializable{
     private void M_Btn_AddSP_AddMo(ActionEvent event) {
     }
 
+    void loadWindow(String loc , String title){
+        try {
+
+            Parent parent = FXMLLoader.load(getClass().getResource(loc));
+            Stage stage = new Stage(StageStyle.DECORATED);
+            stage.setScene(new Scene(parent));
+            stage.setTitle(title);
+            stage.show();
+        } catch (IOException s) {
+            s.printStackTrace();
+        }}
+
+
+    
+
+
     @FXML
-    private void M_Btn_Print_AddMo(ActionEvent event) {
+     private void M_Btn_Print_AddMo(ActionEvent event)  {
+       
+     loadWindow("/sample/Print_Window.fxml" ,"" );
+
+       
+    
     }
+     
+    
 
     @FXML
     private void M_Btn_Cancle_AddMo(ActionEvent event) {
@@ -104,7 +139,7 @@ public class Controller_AddMO implements Initializable{
        Txfiled_VAT_AddMO.clear();
        Txfiled_MOnum_AddMO.clear();
        Txfiled_SearchSP_AddMO.clear();
-       Selct_Techichan_AddMO.disableProperty();
+       Selct_Techichan_AddMO.getSelectionModel().clearSelection();
        
        
        
@@ -139,20 +174,61 @@ public class Controller_AddMO implements Initializable{
          //Txfiled_ProplemDisc_AddMO.getText()+"''"+Txfiled_CusMnum_AddMO.getText()+"'"
                  //+ "'"+Date_Warranty_AddMO.getValue()+"''"+Date_StartMo_AddMO.getValue()+"''"+Date_EndMO_AddMO.getValue()+"''"+Txfiled_SPCost_AddMO.getText()+"'"
                  //+ "'"+Txfiled_MOCost_AddMO.getText()+"''"+Txfiled_MOnum_AddMO.getText()+"')";
+                 
                  //String sql = "select * from maintenance_operation WHERE MO_NBER = '" + Txfiled_MOnum_AddMO.getText()+ "'";
              
-           Statement st = connection.createStatement();
+                Statement st = connection.createStatement();
                st.executeQuery("select * FROM  maintenance_operation WHERE MO_NBER= '" + Txfiled_MOnum_AddMO.getText()+ "'");
               ResultSet rs = st.getResultSet();
+              //st = connection.prepareCall(sql);
               
               if(rs.first()){
                   
+            
+        
             Txfiled_ProplemDisc_AddMO.setText(rs.getString("PROBLEM_DESC"));
             Txfiled_CusMnum_AddMO.setText(rs.getString("CUS_MOBILE_NBER"));
             Txfiled_SPCost_AddMO.setText(rs.getString("SP_COST"));
             Txfiled_MOCost_AddMO.setText(rs.getString("MO_COST"));
             Txfiled_DevSerialN_AddMO.setText(rs.getString("DEVICE_SN"));
             Txfiled_DevDiscription_AddMO.setText(rs.getString("DEVICE_DESC"));
+            Date_Warranty_AddMO.getEditor().setText(rs.getString("WARRANTY"));
+            Date_StartMo_AddMO.getEditor().setText(rs.getString("STARTING_DATE"));
+            Date_EndMO_AddMO.getEditor().setText(rs.getString("ENDING_DATE"));
+             Btn_Delete_AddMo.setDisable(false);
+             Btn_Save_AddMo.setDisable(false);
+             Btn_Print_AddMo.setDisable(false);
+             Btn_Delete_AddMo.setDisable(false);
+             Txfiled_CusName_AddMO.setDisable(true);
+      //Selct_Techichan_AddMO.getSelectionModel().selectedIndexProperty().(rs.getString("STATE"));
+      
+            
+            //Selct_MoStatus_AddMO.setItems(Integer.toString(rs.getInt("EMPLOYEE_ID"));
+            //String s = rs.getString("STATE");
+              }else
+              {
+                  Txfiled_MOnum_AddMO.setDisable(true);
+                  Btn_Delete_AddMo.setDisable(true);
+                  Btn_Cancle_AddMo.setDisable(false);
+                  Btn_Save_AddMo.setDisable(false);
+                  Btn_Print_AddMo.setDisable(false);
+                   Txfiled_CusName_AddMO.setDisable(false);
+                  
+                  
+
+                                    
+                  
+                 
+                  
+              
+            
+            
+            
+              }
+            
+            
+            
+             
             //String sringFormatDate = .sqlDateToString(rs.getDate("STARTING_DATE"));
             // Date_EndMO_AddMO.;
             //Selct_MoStatus_AddMO.(rs.getString("PROBLEM_DESC"));
@@ -165,16 +241,13 @@ public class Controller_AddMO implements Initializable{
             //System.out.println(rs.getString(""));
             //System.out.println(rs.getString(""));
 
-        }
-              
-              
-    }              
+                               
      
 
-      // java.sql.Statement statement1 = connection.createStatement();
-        //statement1.executeQuery(sql);
-    
+      java.sql.Statement statement1 = connection.createStatement();
+       //statement1.executeQuery(sql);
 
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         
