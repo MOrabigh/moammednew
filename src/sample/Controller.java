@@ -107,6 +107,7 @@ public class Controller implements Initializable{
     @FXML
     private void Btn_AddMO_MangeMO(ActionEvent event) {
       loadWindow("/sample/AddMoNeww.fxml" ,"" );
+      
 
     }
 
