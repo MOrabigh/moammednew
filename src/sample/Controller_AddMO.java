@@ -209,6 +209,7 @@ public class Controller_AddMO implements Initializable{
               }else
               {
                   Txfiled_MOnum_AddMO.setDisable(true);
+                  Txfiled_MOnum_AddMO.clear();
                   Btn_Delete_AddMo.setDisable(true);
                   Btn_Cancle_AddMo.setDisable(false);
                   Btn_Save_AddMo.setDisable(false);
