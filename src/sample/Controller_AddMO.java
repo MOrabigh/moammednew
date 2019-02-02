@@ -11,10 +11,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -47,9 +50,9 @@ public class Controller_AddMO implements Initializable{
     @FXML
     private JFXTextArea Txfiled_ProplemDisc_AddMO;
     @FXML
-    private ComboBox<?> Selct_Techichan_AddMO;
+    private ComboBox<String> Selct_Techichan_AddMO;
     @FXML
-    private ComboBox<?> Selct_MoStatus_AddMO;
+    private ComboBox<String> Selct_MoStatus_AddMO;
      ObservableList<String> ListOfStatus = FXCollections.observableArrayList("UnderMO", "Another Problem", "Finsh");
 
     ObservableList<String> ListOfTechichan = FXCollections.observableArrayList();
@@ -140,6 +143,11 @@ public class Controller_AddMO implements Initializable{
        Txfiled_MOnum_AddMO.clear();
        Txfiled_SearchSP_AddMO.clear();
        Selct_Techichan_AddMO.getSelectionModel().clearSelection();
+       Selct_MoStatus_AddMO.getSelectionModel().clearSelection();
+       Date_Warranty_AddMO.getEditor().clear();
+       Date_StartMo_AddMO.getEditor().clear();
+       Date_EndMO_AddMO.getEditor().clear();
+       
        
        
        
@@ -161,6 +169,7 @@ public class Controller_AddMO implements Initializable{
 
     ConnectionClass connectionClass = new ConnectionClass();
     //Connection connection;
+   
     @FXML
     private void M_Btn_Search_AddMo(ActionEvent event) throws SQLException {
         
@@ -175,14 +184,30 @@ public class Controller_AddMO implements Initializable{
                  //+ "'"+Date_Warranty_AddMO.getValue()+"''"+Date_StartMo_AddMO.getValue()+"''"+Date_EndMO_AddMO.getValue()+"''"+Txfiled_SPCost_AddMO.getText()+"'"
                  //+ "'"+Txfiled_MOCost_AddMO.getText()+"''"+Txfiled_MOnum_AddMO.getText()+"')";
                  
-                 //String sql = "select * from maintenance_operation WHERE MO_NBER = '" + Txfiled_MOnum_AddMO.getText()+ "'";
+               //  String sql = "select * from maintenance_operation WHERE MO_NBER = '" + Txfiled_MOnum_AddMO.getText()+ "'";
              
                 Statement st = connection.createStatement();
-               st.executeQuery("select * FROM  maintenance_operation WHERE MO_NBER= '" + Txfiled_MOnum_AddMO.getText()+ "'");
+                
+                
+                
+               st.executeQuery("select * FROM  maintenance_operation WHERE MO_NBER= '" + Txfiled_MOnum_AddMO.getText()+"'");
+               //String dq1=("select  EMP_NAME FROM  maintenance_operation INNER JOIN EMPLOYEE ON maintenance_operation.EMPLOYEE_ID = EMPLOYEE.EMPLOYEE_ID= '" +  Selct_Techichan_AddMO.getSelectionModel()+ "'"); 
+                
+                 //Statement ps1=connection.prepareStatement(dq1); 
+               
+                 //ResultSet rs1=ps1.executeQuery(dq1); 
+               //st.executeQuery("SELECT t1.*, t2.* FROM t1 JOIN t2 WHERE t1.i1 = t2.i2  '");
+               //st.executeQuery("select  EMP_NAME FROM  EMPLOYEE WHERE EMPLOYEE_ID= '" +  Txfiled_MOnum_AddMO.getText()+ "'");
+                // st.executeQuery("select * CUS_NAME FROM  CUSTOMER WHERE CUS_MOBILE_NBER= '" + Txfiled_CusMnum_AddMO.getText()+ "'");
               ResultSet rs = st.getResultSet();
-              //st = connection.prepareCall(sql);
+              //st = connection.prepareCall();
               
               if(rs.first()){
+                  String EDate = rs.getString("ENDING_DATE");
+                  String WDate = rs.getString("WARRANTY");
+                  String SDate = rs.getString("STARTING_DATE");
+                  
+                  
                   
             
           Txfiled_MOnum_AddMO.setDisable(true);
@@ -192,22 +217,35 @@ public class Controller_AddMO implements Initializable{
             Txfiled_MOCost_AddMO.setText(rs.getString("MO_COST"));
             Txfiled_DevSerialN_AddMO.setText(rs.getString("DEVICE_SN"));
             Txfiled_DevDiscription_AddMO.setText(rs.getString("DEVICE_DESC"));
-            Date_Warranty_AddMO.getEditor().setText(rs.getString("WARRANTY"));
-            Date_StartMo_AddMO.getEditor().setText(rs.getString("STARTING_DATE"));
-            Date_EndMO_AddMO.getEditor().setText(rs.getString("ENDING_DATE"));
+           // Date_Warranty_AddMO.getEditor().setText(rs.getString("WARRANTY"));
+           // Date_StartMo_AddMO.getEditor().setText(rs.getString("STARTING_DATE"));
+             Date_EndMO_AddMO.getEditor().setText(EDate);
+               Date_Warranty_AddMO.getEditor().setText(WDate);
+                 Date_StartMo_AddMO.getEditor().setText(SDate);
+             
+          //List<String> State = new ArrayList<>();
+          //State.add(rs.getString("STATE"));
+          //Selct_MoStatus_AddMO.setItems(FXCollections.observableArrayList(State));
+          Selct_MoStatus_AddMO.getSelectionModel().select(rs.getString("STATE"));
+         //Selct_Techichan_AddMO.getSelectionModel().select(rs.getString("EMPLOYEE_ID"));
+          Selct_Techichan_AddMO.setItems(ListOfTechichan);
+          
+          
+          //List<String> Tec = new ArrayList<>();
+          //Tec.add(rs.getString("EMPLOYEE_ID"));
+          //Selct_Techichan_AddMO.getSelectionModel().select(rs.getString("EMPLOYEE_ID"));
+          
              Btn_Delete_AddMo.setDisable(false);
              Btn_Save_AddMo.setDisable(false);
              Btn_Print_AddMo.setDisable(false);
              Btn_Delete_AddMo.setDisable(false);
              Txfiled_CusName_AddMO.setDisable(true);
              Btn_Cancle_AddMo.setDisable(false);
-      //Selct_Techichan_AddMO.getSelectionModel().selectedIndexProperty().(rs.getString("STATE"));
+             
       
-            
-            //Selct_MoStatus_AddMO.setItems(Integer.toString(rs.getInt("EMPLOYEE_ID"));
-            //String s = rs.getString("STATE");
               }else
               {
+                  
                   Txfiled_MOnum_AddMO.setDisable(true);
                   Txfiled_MOnum_AddMO.clear();
                   Btn_Delete_AddMo.setDisable(true);
@@ -215,48 +253,51 @@ public class Controller_AddMO implements Initializable{
                   Btn_Save_AddMo.setDisable(false);
                   Btn_Print_AddMo.setDisable(false);
                    Txfiled_CusName_AddMO.setDisable(false);
-                  
-                  
-
-                                    
-                  
                  
-                  
-              
-            
-            
             
               }
             
-            
-            
-             
-            //String sringFormatDate = .sqlDateToString(rs.getDate("STARTING_DATE"));
-            // Date_EndMO_AddMO.;
-            //Selct_MoStatus_AddMO.(rs.getString("PROBLEM_DESC"));
-            //Txfiled_ProplemDisc_AddMO.setText(rs.getString("PROBLEM_DESC"));
-            //Txfiled_ProplemDisc_AddMO.setText(rs.getString("PROBLEM_DESC"));
-            //Txfiled_ProplemDisc_AddMO.setText(rs.getString("PROBLEM_DESC"));
-            
-         
-            //System.out.println(rs.getString(""));
-            //System.out.println(rs.getString(""));
-            //System.out.println(rs.getString(""));
-
-                               
+               
+           
+           
+              
+              
+    
      
 
       java.sql.Statement statement1 = connection.createStatement();
-       //statement1.executeQuery(sql);
+       //statement1.executeQuery(dq1);
 
+    
+    
+       //statement1.executeQuery(sql);
+              
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        loadTech();
         
           //ConnectionClass connectionClass = new ConnectionClass();
     // we call conneClass  that we make it up
     Connection connection = connectionClass.getConnection();
         System.out.println("Byee");    }
+     public void loadTech() {
+        String query = "SELECT EMP_NAME FROM employee";
+        ResultSet rs = connectionClass.execQuery(query);
+        try {
+            while (rs.next()) {
+
+                ListOfTechichan.add(rs.getString("EMP_NAME"));
+
+            }
+            rs.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+        }
+
+    }
 
   
 
